@@ -14,18 +14,6 @@ public class Ntity extends Player {
     super(counter, Ntity.class.getName());
   }
 
-//  public Counter[][] getCounterPlacements(Board board) {
-//    try {
-//      Method m = board.getClass().getDeclaredMethod("getCounterPlacements", null);
-//      m.setAccessible(true);
-//      System.out.println("Called getCounterPlacements, result: " + m.invoke(board, null)); // Remove
-//      return (Counter[][]) m.invoke(board, null);
-//    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
-//    }
-//    System.out.println("fail");
-//    return new Counter[0][];
-//  }
-
   public Counter[][] getCounterPlacements(Board board) {
     System.out.println(getStolenCounterPlacements(board));
     return getStolenCounterPlacements(board);
