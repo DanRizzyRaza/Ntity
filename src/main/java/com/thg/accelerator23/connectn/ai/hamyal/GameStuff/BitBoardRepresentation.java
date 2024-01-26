@@ -1,46 +1,53 @@
 package com.thg.accelerator23.connectn.ai.hamyal.GameStuff;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
-public class Analyser {
+public class BitBoardRepresentation {
     long[][] bitBoard;
     int[] fillLevel; // one above actual location
-    int moveCount;
-    int[] moves;
+    int moveCount = 0;
+    boolean homePlayer;
+    int[] moves = new int[80];
 
-    Analyser(long[][] bitBoard, int[] fillLevel, int moveCount, int[] moves) {
+    public BitBoardRepresentation(long[][] bitBoard, int[] fillLevel, boolean homePlayer) {
         this.bitBoard=bitBoard;
         this.fillLevel=fillLevel;
-        this.moveCount=moveCount;
-        this.moves=moves;
+        this.homePlayer=homePlayer;
     }
 
-    void makeMove(int col) {
+    public long[][] getBitBoard() {
+        return bitBoard;
+    }
+
+    public int[] getFillLevel() {
+        return fillLevel;
+    }
+
+    public void makeMove(int col) {
         long move;
         if (col >= 7 && fillLevel[7] > 64) {
             move = 1L << fillLevel[col]++ - 64;
-            bitBoard[moveCount & 1][1] ^= move; // update smaller long
+            bitBoard[homePlayer ? 0 : 1][1] ^= move; // update smaller long
         } else {
             move = 1L << fillLevel[col]++;
-            bitBoard[moveCount & 1][0] ^= move;
+            bitBoard[homePlayer ? 0 : 1][0] ^= move;
         }
         moves[moveCount++] = col;
     }
 
-    void undoMove() {
+    public void undoMove() {
         int col = moves[--moveCount];
         long move;
         if (col >= 7 && fillLevel[7] > 64) {
             move = 1L << --fillLevel[col] - 64;
-            bitBoard[moveCount & 1][1] ^= move; // update smaller long
+            bitBoard[homePlayer ? 0 : 1][1] ^= move; // update smaller long
         } else {
             move = 1L << --fillLevel[col];
-            bitBoard[moveCount & 1][0] ^= move;
+            bitBoard[homePlayer ? 0 : 1][0] ^= move;
         }
     }
 
-    public static int[] validMoves(int[] fillLevel) {
+    public int[] validMoves() {
         ArrayList<Integer> moves = new ArrayList<>();
 
         long TOPLongerLong = Long.parseUnsignedLong("0100000000100000000100000000100000000100000000100000000100000000",2);
@@ -59,6 +66,23 @@ public class Analyser {
         }
         return moves.stream().mapToInt(Integer::intValue).toArray();
     }
+
+//    public boolean isOver() {
+//        return moves.length == 0
+//                || isWin(bitBoard[0])
+//                || isWin(bitBoard[1]);
+//    };
+
+    public byte isOver() {
+        if (isWin(bitBoard[0])) {
+            return 0b1;
+        } else if (isWin(bitBoard[2])) {
+            return 0b10;
+        } else if (moves.length == 0) {
+            return 0b11;
+        }
+        return 0b0;
+    };
 
     public static boolean isWin(long[] bitBoard) {
         int[] winShiftNumbers = {1,8,9,10}; // gave up on a general solution a while ago
@@ -81,9 +105,38 @@ public class Analyser {
         return false;
     }
 
+//    public BitBoardRepresentation getBitBoardAfterMove(int colToPlay) {
+//        BitBoardRepresentation bitBoardAfterMove = new BitBoardRepresentation(bitBoard, fillLevel, moveCount, moves);
+//        bitBoardAfterMove.makeMove(colToPlay);
+//        return bitBoardAfterMove;
+//    }
+
     public static long[] bitBoardShift(long[] bb, int n) { // never shift by zero, it breaks
         return new long[]{bb[0] << n, (bb[1] << n) | (bb[0] >>> (64 - n))}; // logical right shift
     }
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
