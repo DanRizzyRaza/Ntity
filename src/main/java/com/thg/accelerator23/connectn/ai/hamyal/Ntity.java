@@ -106,7 +106,7 @@ public class Ntity extends Player {
 
 // TODO TESTING HERE
     MiniMax test = new MiniMax(getCounterPlacements(board));
-    System.out.println(test.NegaMax(test.getBitBoardRepresentation(),Integer.MIN_VALUE, Integer.MAX_VALUE, 12, 1, 1));
+    System.out.println(test.NegaMax(test.getBitBoardRepresentation(),Integer.MIN_VALUE, Integer.MAX_VALUE, 13, 1, 1)[0]);
 // TODO TESTING HERE
 
 //    BitBoardRepresentation trial = getCounterPlacements(board);

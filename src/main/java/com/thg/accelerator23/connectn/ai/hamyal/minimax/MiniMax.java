@@ -9,7 +9,8 @@ import static com.thg.accelerator23.connectn.ai.hamyal.Ntity.display;
 
 public class MiniMax {
     BitBoardRepresentation bitBoardRepresentation;
-    MaxSizeHashMap<Integer, Integer> transpositionTable = new MaxSizeHashMap<>(2^32); // number of ints? aha
+    // Transposition table [depth, flag, value, move] flag is 0 for EXACT, 1 for LOWERBOUND, 2 for UPPERBOUND
+    MaxSizeHashMap<Integer, Integer[]> transpositionTable = new MaxSizeHashMap<>(2^32); // number of ints? aha
 
     public MiniMax(BitBoardRepresentation bitBoardRepresentation) {
         this.bitBoardRepresentation = bitBoardRepresentation;
@@ -56,10 +57,26 @@ public class MiniMax {
 //    }
 //}
 
-    public int NegaMax(BitBoardRepresentation bitBoardRepresentation, int alpha, int beta, int depth, int colour, int heuristicMarker) {
+    public int[] NegaMax(BitBoardRepresentation bitBoardRepresentation, int alpha, int beta, int depth, int colour, int heuristicMarker) {
+        // output is [value, move]
         // for first call color is 1, heuristic marker = 1 is home, -1 if away, doesn't change
-
-        byte gameWinner = bitBoardRepresentation.isOver();
+        int alphaStart = alpha;
+        // Transposition table [depth, flag, value, move] flag is 0 for EXACT, 1 for LOWERBOUND, 2 for UPPERBOUND
+        Integer[] ttEntry = transpositionTable.get(hashBoardState(bitBoardRepresentation));
+        if (ttEntry != null && ttEntry[0] >= depth) {
+            if (ttEntry[1] == 0) {
+                return new int[]{ttEntry[2], ttEntry[3]};
+            } else if (ttEntry[1] == 1) {
+                alpha = Math.max(alpha, ttEntry[2]);
+            } else if (ttEntry[1] == 2) {
+                beta = Math.min(beta, ttEntry[2]);
+            }
+            if (alpha >= beta) {
+                return new int[]{ttEntry[2], ttEntry[3]};
+            }
+        } else {
+            ttEntry = new Integer[4];
+        }
 
         //============================================
 //        System.out.println(gameWinner);
@@ -67,20 +84,22 @@ public class MiniMax {
 //        System.out.println(bitBoardRepresentation.getMoveCount());
         //============================================
 
+        byte gameWinner = bitBoardRepresentation.isOver();
+
         if (depth == 0 || gameWinner != 0) {
             byte noMoves = bitBoardRepresentation.getMoveCount();
             // heuristic = 41 - no_moves_from_winner
             // biased score for home, multiply by heuristic marker, but also by colour
             if (gameWinner == 1) {
                 // odd number of moves
-                return colour * heuristicMarker * (40 - (noMoves/2)); //41 -((noMoves/2)+1);
+                return new int[]{colour * heuristicMarker * (40 - (noMoves/2)), 0}; //41 -((noMoves/2)+1);
             } else if (gameWinner == 2) {
-                return colour * heuristicMarker * ((noMoves/2) - 41);
+                return new int[]{colour * heuristicMarker * ((noMoves/2) - 41), 0};
             } else
 //                if (gameWinner == 3)
                 {
 //                    System.out.println("draw");
-                return 0; //draw
+                return new int[]{0,0}; //draw
             }
         }
         int value = Integer.MIN_VALUE;
@@ -101,7 +120,7 @@ public class MiniMax {
             // Make move, we will undo in a bit
             bitBoardRepresentation.makeMove(moveCol);
 
-            int thisValue = -NegaMax(bitBoardRepresentation, -beta, -alpha,depth-1, -colour, heuristicMarker);
+            int thisValue = -NegaMax(bitBoardRepresentation, -beta, -alpha,depth-1, -colour, heuristicMarker)[1];
 
             if (thisValue > value) {
                 value = thisValue;
@@ -118,8 +137,21 @@ public class MiniMax {
             }
 
         }
-//        bitBoardRepresentation.undoMove();
-        return value;
+
+        // Storing to Transposition table [depth, flag, value, move] flag is 0 for EXACT, 1 for LOWERBOUND, 2 for UPPERBOUND
+        ttEntry[2] = value;
+        if (value <= alphaStart) {
+            ttEntry[1] = 2;
+        } else if (value >= beta) {
+            ttEntry[1] = 1;
+        } else {
+            ttEntry[1] = 0;
+        }
+        ttEntry[0] = depth;
+        ttEntry[3] = move;
+
+
+        return new int[]{value, move};
     }
 
 
