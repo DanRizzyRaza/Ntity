@@ -5,9 +5,8 @@ import java.math.BigInteger;
 public class Main2 {
     public static void main(String[] args) {
 
-        long test = 0b10000000000000000000000000000000;
-
-        System.out.println(Long.toString(test,2));
+        String test = Long.toBinaryString(Long.parseUnsignedLong("0100000000100000000100000000100000000100000000100000000100000000",2));
+        System.out.println(Long.toBinaryString(0b10000000010000000010000000));
 
     }
 }

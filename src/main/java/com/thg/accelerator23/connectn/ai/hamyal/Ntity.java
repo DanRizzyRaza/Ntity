@@ -5,12 +5,7 @@ import com.thehutgroup.accelerator.connectn.player.Counter;
 import com.thehutgroup.accelerator.connectn.player.GameConfig;
 import com.thehutgroup.accelerator.connectn.player.Player;
 
-import java.math.BigInteger;
-import java.net.SocketTimeoutException;
-import java.util.regex.Pattern;
-
-import static com.thg.accelerator23.connectn.ai.hamyal.GameStuff.Analyser.bitBoardShift;
-import static com.thg.accelerator23.connectn.ai.hamyal.GameStuff.Analyser.isWin;
+import static com.thg.accelerator23.connectn.ai.hamyal.GameStuff.Analyser.*;
 
 public class Ntity extends Player {
   int[] heightArr;
@@ -25,46 +20,17 @@ public class Ntity extends Player {
     this(counter, new GameConfig(10,8,4));
   }
 
-  public BigInteger[] getCounterPlacements(Board board, Counter counter2) {
-    StringBuilder myCurrByte = new StringBuilder();
-    StringBuilder opponentCurrByte = new StringBuilder();
-
-    Counter[][] counterPlacements = board.getCounterPlacements();
-
-    for (Counter[] column: counterPlacements) {
-      for (Counter counter: column) {
-        if (counter == Counter.O) {
-          myCurrByte.append("1");
-          opponentCurrByte.append("0");
-        }
-        else if (counter == Counter.X) {
-          opponentCurrByte.append("1");
-          myCurrByte.append("0");
-        } else {
-          myCurrByte.append("0");
-          opponentCurrByte.append("0");
-        }
-      }
-    }
-    // passing byte array into constructor where the byte array is twos complement rep, doesn't matter...
-    return new BigInteger[]{new BigInteger(myCurrByte.toString(), 2), new BigInteger(opponentCurrByte.toString(), 2)};
-  }
-
   public long[][] getCounterPlacements(Board board) {
     long move;
     long[][] bitBoard = new long[2][2]; // {home[],away[]}
     int movesPlayed = 0;
-//    int count = 0;
     int shift;
 
     Counter[][] counterPlacements = board.getCounterPlacements();
 
     for (Counter[] column: counterPlacements) {
       for (Counter counter: column) {
-//        count++;
-//        if(count % 8 == 0 && count != 0 && count != 64) {
-//          movesPlayed++;
-//        }
+
         if(movesPlayed < 90 && (movesPlayed + 1) % 9 == 0) {
           movesPlayed++;
         }
@@ -107,9 +73,11 @@ public class Ntity extends Player {
   public int makeMove(Board board) {
     //TODO: make sure said analysis uses less than 2G of heap and returns within 10 seconds on whichever machine is running it
 
-    long[] test = getCounterPlacements(board)[0]; //home
-    System.out.println(isWin(test));
-
+//    long[] test = getCounterPlacements(board)[0]; //home
+//    System.out.println(isWin(test));
+//    int[] fillLevel = {7,16,25,34,43,52,61,70,79,88};
+    int[] fillLevel = {8,17,26,35,44,53,62,71,80,89};
+    int[] test = validMoves(fillLevel);
 
     return 4;
   }
