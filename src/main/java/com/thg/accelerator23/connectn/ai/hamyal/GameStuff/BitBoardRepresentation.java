@@ -121,6 +121,10 @@ public class BitBoardRepresentation {
     public static long[] bitBoardShift(long[] bb, int n) { // never shift by zero, it breaks
         return new long[]{bb[0] << n, (bb[1] << n) | (bb[0] >>> (64 - n))}; // logical right shift
     }
+
+    public static long[] bitBoardShiftAddOnes(long[] bb, int n) { // never shift by zero, it breaks
+        return new long[]{((bb[0] << n) | ((1L << n) - 1)), (bb[1] << n) | (bb[0] >>> (64 - n))}; // logical right shift
+    }
 }
 
 

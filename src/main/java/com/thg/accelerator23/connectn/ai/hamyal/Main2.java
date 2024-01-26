@@ -3,15 +3,19 @@ import java.lang.reflect.*;
 import java.lang.Long;
 import java.math.BigInteger;
 
+import static com.thg.accelerator23.connectn.ai.hamyal.minimax.MiniMax.orderMiddleFirst;
+
 public class Main2 {
     public static void main(String[] args) {
 
 //        String test = Long.toBinaryString(Long.parseUnsignedLong("0100000000100000000100000000100000000100000000100000000100000000",2));
 //        System.out.println(Long.toBinaryString(0b10000000010000000010000000));
 
-        long test = Long.parseUnsignedLong("1000000000100000000100000000100000000100000000100000000100000001",2);
-        System.out.println(Long.toBinaryString(test));
-        System.out.println(Long.toBinaryString(test >> 5 << 5));
+//        long test = Long.parseUnsignedLong("1000000000100000000100000000100000000100000000100000000100000001",2);
+//        System.out.println(Long.toBinaryString(test));
+//        System.out.println(Long.toBinaryString(test >> 5 << 5));
+
+        orderMiddleFirst(new int[]{1,2,3,4,5});
 
     }
 }

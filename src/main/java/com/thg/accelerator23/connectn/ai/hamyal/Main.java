@@ -42,6 +42,14 @@ public class Main {
 //        counterArray[3][0] = Counter.X;
 //        counterArray[8][3] = Counter.O;
 
+        // two threes stacks
+        counterArray[1][0] = Counter.O;
+        counterArray[2][0] = Counter.O;
+        counterArray[3][0] = Counter.O;
+        counterArray[1][1] = Counter.X;
+        counterArray[2][1] = Counter.X;
+        counterArray[3][1] = Counter.X;
+
 
 
 
