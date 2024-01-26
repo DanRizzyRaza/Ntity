@@ -6,7 +6,11 @@ import com.thehutgroup.accelerator.connectn.player.GameConfig;
 import com.thehutgroup.accelerator.connectn.player.Player;
 
 import java.math.BigInteger;
+import java.net.SocketTimeoutException;
 import java.util.regex.Pattern;
+
+import static com.thg.accelerator23.connectn.ai.hamyal.GameStuff.Analyser.bitBoardShift;
+import static com.thg.accelerator23.connectn.ai.hamyal.GameStuff.Analyser.isWin;
 
 public class Ntity extends Player {
   int[] heightArr;
@@ -50,18 +54,21 @@ public class Ntity extends Player {
     long move;
     long[][] bitBoard = new long[2][2]; // {home[],away[]}
     int movesPlayed = 0;
-    int count = 0;
+//    int count = 0;
     int shift;
 
     Counter[][] counterPlacements = board.getCounterPlacements();
 
     for (Counter[] column: counterPlacements) {
       for (Counter counter: column) {
-        System.out.println(counter);
-        count++;
-        if(count % 8 == 0 && count != 0 && count != 64) {
+//        count++;
+//        if(count % 8 == 0 && count != 0 && count != 64) {
+//          movesPlayed++;
+//        }
+        if(movesPlayed < 90 && (movesPlayed + 1) % 9 == 0) {
           movesPlayed++;
         }
+
         if (movesPlayed < 64) {
             if (counter == Counter.O) {
               move = 1L << movesPlayed;
@@ -100,7 +107,9 @@ public class Ntity extends Player {
   public int makeMove(Board board) {
     //TODO: make sure said analysis uses less than 2G of heap and returns within 10 seconds on whichever machine is running it
 
-    long[][] test = getCounterPlacements(board);
+    long[] test = getCounterPlacements(board)[0]; //home
+    System.out.println(isWin(test));
+
 
     return 4;
   }
