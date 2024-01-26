@@ -33,10 +33,6 @@ public class BitBoardAnalyser {
         return winningMovesCount;
     }
 
-    public byte getMoveCount() {
-        return moveCount;
-    }
-
     public BitBoardAnalyser(long[][] bitBoard, byte moveCount, int[] fillLevel) {
         this.bitBoard = bitBoard;
         this.moveCount = moveCount;

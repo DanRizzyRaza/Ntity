@@ -93,25 +93,17 @@ public class Ntity extends Player {
     //TODO: make sure said analysis uses less than 2G of heap and returns within 10 seconds on whichever machine is running it
 
 
-    BitBoardRepresentation test = getCounterPlacements(board);
-//    test.makeMove(0);
-//    test.makeMove(0);
-//    test.makeMove(0);
-//    test.makeMove(0);
-//    test.makeMove(0);
-//    test.makeMove(0);
-//    test.makeMove(0);
-//    test.makeMove(0);
+//    BitBoardRepresentation test = getCounterPlacements(board);
 //    System.out.println(Arrays.toString(test.validMoves()));
 //    display(test);
-    BitBoardAnalyser trial = new BitBoardAnalyser(test.getBitBoard(), test.getMoveCount(), test.getFillLevel());
-    System.out.println(trial.getIsOver());
-    System.out.println(trial.getWinningMovesCount()[0]);
-    System.out.println(trial.getWinningMovesCount()[1]);
+//    BitBoardAnalyser trial = new BitBoardAnalyser(test.getBitBoard(), test.getMoveCount(), test.getFillLevel());
+//    System.out.println(trial.getIsOver());
+//    System.out.println(trial.getWinningMovesCount()[0]);
+//    System.out.println(trial.getWinningMovesCount()[1]);
 
 // TODO TESTING HERE
-//    MiniMax test = new MiniMax(getCounterPlacements(board));
-//    System.out.println(test.NegaMax(test.getBitBoardRepresentation(),Integer.MIN_VALUE, Integer.MAX_VALUE, 13, 1, 1)[0]);
+    MiniMax test = new MiniMax(getCounterPlacements(board));
+    System.out.println(test.NegaMax(test.getBitBoardRepresentation(),Integer.MIN_VALUE, Integer.MAX_VALUE, 10, 1, 1)[0]);
 // TODO TESTING HERE
 
 //    BitBoardRepresentation trial = getCounterPlacements(board);

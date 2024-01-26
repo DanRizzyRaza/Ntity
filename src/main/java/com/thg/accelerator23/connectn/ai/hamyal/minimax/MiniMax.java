@@ -1,5 +1,6 @@
 package com.thg.accelerator23.connectn.ai.hamyal.minimax;
 
+import com.thg.accelerator23.connectn.ai.hamyal.GameStuff.BitBoardAnalyser;
 import com.thg.accelerator23.connectn.ai.hamyal.GameStuff.BitBoardRepresentation;
 import com.thg.accelerator23.connectn.ai.hamyal.util.MaxSizeHashMap;
 
@@ -30,6 +31,8 @@ public class MiniMax {
     }
 
     public int[] NegaMax(BitBoardRepresentation bitBoardRepresentation, int alpha, int beta, int depth, int colour, int heuristicMarker) {
+
+        BitBoardAnalyser bitBoardAnalyser = new BitBoardAnalyser(bitBoardRepresentation.getBitBoard(), bitBoardRepresentation.getMoveCount(), bitBoardRepresentation.getFillLevel());
         // output is [value, move]
         // for first call color is 1, heuristic marker = 1 is home, -1 if away, doesn't change
         int alphaStart = alpha;
@@ -50,13 +53,7 @@ public class MiniMax {
             ttEntry = new Integer[4];
         }
 
-        //============================================
-//        System.out.println(gameWinner);
-//        System.out.println(depth);
-//        System.out.println(bitBoardRepresentation.getMoveCount());
-        //============================================
-
-        byte gameWinner = bitBoardRepresentation.isOver();
+        byte gameWinner = bitBoardAnalyser.getIsOver();
 
         if (depth == 0 || gameWinner != 0) {
             byte noMoves = bitBoardRepresentation.getMoveCount();
@@ -67,11 +64,11 @@ public class MiniMax {
                 return new int[]{colour * heuristicMarker * (40 - (noMoves/2)), 0}; //41 -((noMoves/2)+1);
             } else if (gameWinner == 2) {
                 return new int[]{colour * heuristicMarker * ((noMoves/2) - 41), 0};
-            } else
-//                if (gameWinner == 3)
-                {
-//                    System.out.println("draw");
+            } else if (gameWinner == 3) {
                 return new int[]{0,0}; //draw
+            } else
+                {
+                return new int[]{colour*heuristicMarker*(bitBoardAnalyser.getWinningMovesCount()[0] - bitBoardAnalyser.getWinningMovesCount()[1]),0}; //draw
             }
         }
         int value = Integer.MIN_VALUE;
@@ -83,12 +80,6 @@ public class MiniMax {
         for (int moveCol: bitBoardRepresentation.validMoves()) {
 //        for (int moveCol: orderMiddleFirst(bitBoardRepresentation.validMoves())) {
 
-
-            //============================================
-//            display(bitBoardRepresentation);
-//            System.out.println("2: " + Arrays.toString(bitBoardRepresentation.validMoves()));
-//            System.out.println(value);
-            //============================================
 
             // Make move, we will undo in a bit
             bitBoardRepresentation.makeMove(moveCol);
