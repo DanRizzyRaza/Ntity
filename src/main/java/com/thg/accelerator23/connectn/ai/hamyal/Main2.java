@@ -8,8 +8,7 @@ public class Main2 {
 //        String test = Long.toBinaryString(Long.parseUnsignedLong("0100000000100000000100000000100000000100000000100000000100000000",2));
 //        System.out.println(Long.toBinaryString(0b10000000010000000010000000));
 
-        int[] test = new int[]{};
-        System.out.println(test.length);
+        System.out.println(Integer.MIN_VALUE);
 
     }
 }

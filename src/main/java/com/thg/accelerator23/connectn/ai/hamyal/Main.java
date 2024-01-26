@@ -10,14 +10,39 @@ public class Main {
         Counter[][] counterArray = new Counter[10][8];
 
 
-        counterArray[0][0] = Counter.O;
-//        counterArray[9][0] = Counter.O;
-//        counterArray[1][0] = Counter.O;
-//        counterArray[1][1] = Counter.O;
+//        counterArray[0][0] = Counter.O;
 //
-        counterArray[2][0] = Counter.X;
-        counterArray[3][0] = Counter.O;
-        counterArray[4][0] = Counter.X;
+//        counterArray[7][0] = Counter.X;
+//        counterArray[7][1] = Counter.O;
+//        counterArray[7][2] = Counter.X;
+//        counterArray[7][3] = Counter.O;
+//        counterArray[7][4] = Counter.X;
+//        counterArray[7][5] = Counter.O;
+//        counterArray[7][6] = Counter.X;
+//        counterArray[7][7] = Counter.O;
+
+
+        //away wins:
+//        counterArray[0][0] = Counter.O;
+//        counterArray[0][3] = Counter.X;
+//        counterArray[5][0] = Counter.O;
+//        counterArray[1][2] = Counter.X;
+//        counterArray[6][1] = Counter.O;
+//        counterArray[2][1] = Counter.X;
+//        counterArray[7][2] = Counter.O;
+//        counterArray[3][0] = Counter.X;
+
+
+        // home wins:
+//        counterArray[5][0] = Counter.O;
+//        counterArray[0][0] = Counter.X;
+//        counterArray[6][1] = Counter.O;
+//        counterArray[2][0] = Counter.X;
+//        counterArray[7][2] = Counter.O;
+//        counterArray[3][0] = Counter.X;
+//        counterArray[8][3] = Counter.O;
+
+
 
 
         //diag

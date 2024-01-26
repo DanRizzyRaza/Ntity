@@ -2,17 +2,18 @@ package com.thg.accelerator23.connectn.ai.hamyal.GameStuff;
 
 import java.util.ArrayList;
 
+import static com.thg.accelerator23.connectn.ai.hamyal.Ntity.display;
+
 public class BitBoardRepresentation {
     long[][] bitBoard;
     int[] fillLevel; // one above actual location
-    int moveCount = 0;
-    boolean homePlayer;
+    byte moveCount;
     int[] moves = new int[80];
 
-    public BitBoardRepresentation(long[][] bitBoard, int[] fillLevel, boolean homePlayer) {
+    public BitBoardRepresentation(long[][] bitBoard, int[] fillLevel, byte moveCount) {
         this.bitBoard=bitBoard;
         this.fillLevel=fillLevel;
-        this.homePlayer=homePlayer;
+        this.moveCount = moveCount;
     }
 
     public long[][] getBitBoard() {
@@ -23,31 +24,36 @@ public class BitBoardRepresentation {
         return fillLevel;
     }
 
+    public byte getMoveCount() {
+        return moveCount;
+    }
+
     public void makeMove(int col) {
-        System.out.println(homePlayer);
+//        System.out.println("Player " + (moveCount & 1) + " making a move in column " + col + " now move count is " + (moveCount + 1));
+//        display(this);
+
         long move;
         if (col >= 7 && fillLevel[7] > 64) {
             move = 1L << fillLevel[col]++ - 64;
-            bitBoard[homePlayer ? 0 : 1][1] ^= move; // update smaller long
+            bitBoard[moveCount & 1][1] ^= move; // update smaller long
         } else {
             move = 1L << fillLevel[col]++;
-            bitBoard[homePlayer ? 0 : 1][0] ^= move;
+            bitBoard[moveCount & 1][0] ^= move;
         }
         moves[moveCount++] = col;
-        homePlayer = !homePlayer;
     }
 
     public void undoMove() {
+//        System.out.println("undoing move from column" + moves[moveCount] + " now moves count is " + (moveCount - 1));
         int col = moves[--moveCount];
         long move;
         if (col >= 7 && fillLevel[7] > 64) {
             move = 1L << --fillLevel[col] - 64;
-            bitBoard[homePlayer ? 0 : 1][1] ^= move; // update smaller long
+            bitBoard[moveCount & 1][1] ^= move; // update smaller long
         } else {
             move = 1L << --fillLevel[col];
-            bitBoard[homePlayer ? 0 : 1][0] ^= move;
+            bitBoard[moveCount & 1][0] ^= move;
         }
-        homePlayer = !homePlayer;
     }
 
     public int[] validMoves() {
@@ -57,8 +63,6 @@ public class BitBoardRepresentation {
         long TOPShorterLong = 0b10000000010000000010000000; //Long.parseUnsignedLong("10000000010000000010000000",2);
 
         for(int col = 0; col <= 6; col++) {
-//            System.out.println(Long.toBinaryString((TOPLongerLong)));
-//            System.out.println(Long.toBinaryString((1L << fillLevel[col])));
             if ((TOPLongerLong & (1L << fillLevel[col])) == 0) {moves.add(col);}
         }
         for(int col = 8; col <= 9; col++) {

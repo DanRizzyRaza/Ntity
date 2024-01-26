@@ -7,6 +7,8 @@ import com.thehutgroup.accelerator.connectn.player.Player;
 import com.thg.accelerator23.connectn.ai.hamyal.GameStuff.BitBoardRepresentation;
 import com.thg.accelerator23.connectn.ai.hamyal.minimax.MiniMax;
 
+import java.util.Arrays;
+
 import static com.thg.accelerator23.connectn.ai.hamyal.GameStuff.BitBoardRepresentation.*;
 
 public class Ntity extends Player {
@@ -23,9 +25,9 @@ public class Ntity extends Player {
   }
 
   public BitBoardRepresentation getCounterPlacements(Board board) {
-    boolean homePlayer = true;
     int[] fillLevel = {0,9,18,27,36,45,54,63,72,81};
     int currColumn = 0;
+    byte moveCount = 0;
 
     long move;
     long[][] bitBoard = new long[2][2]; // {home[],away[]}
@@ -40,7 +42,7 @@ public class Ntity extends Player {
 
         if(counter != null) {
           fillLevel[currColumn]++;
-          homePlayer = !homePlayer;
+          moveCount++;
         }
 
         if(moveLocation < 90 && (moveLocation + 2) % 9 == 0) {
@@ -72,7 +74,7 @@ public class Ntity extends Player {
         moveLocation++;
       }
       }
-    return new BitBoardRepresentation(bitBoard, fillLevel, homePlayer); // homePlayer is now whichever player we are
+    return new BitBoardRepresentation(bitBoard, fillLevel, moveCount); // homePlayer is now whichever player we are
   }
 
   public void setUpDimensions(GameConfig gameConfig) {
@@ -91,17 +93,71 @@ public class Ntity extends Player {
 
 
 //    BitBoardRepresentation test = getCounterPlacements(board);
+//    test.makeMove(0);
+//    test.makeMove(0);
+//    test.makeMove(0);
+//    test.makeMove(0);
+//    test.makeMove(0);
+//    test.makeMove(0);
+//    test.makeMove(0);
+//    test.makeMove(0);
+//    System.out.println(Arrays.toString(test.validMoves()));
+//    display(test);
 
 
+// TODO TESTING HERE
     MiniMax test = new MiniMax(getCounterPlacements(board));
-    System.out.println(test.NegaMax(test.getBitBoardRepresentation(), 10000, -100, 100));
+    System.out.println(test.NegaMax(test.getBitBoardRepresentation(),Integer.MIN_VALUE, Integer.MAX_VALUE, 10, 1, 1));
+// TODO TESTING HERE
 
-//    long[] test = getCounterPlacements(board)[0]; //home
-//    System.out.println(isWin(test));
-//    int[] fillLevel = {7,16,25,34,43,52,61,70,79,88};
-//    int[] fillLevel = {8,17,26,35,44,53,62,71,80,89};
-//    int[] test = validMoves(fillLevel);
+//    BitBoardRepresentation trial = getCounterPlacements(board);
+//    display(trial);
+//    System.out.println(Arrays.toString(trial.validMoves()));
+//    System.out.println(trial.isOver());
+
 
     return 4;
   }
+
+  public static void display(BitBoardRepresentation bb) {
+    String bbString = BitBoardToString(bb);
+    bbString = reverseString(bbString);
+    int curr_start = 8;
+    for (int j=0; j<=8;j++) {
+      for (int i = 0; i < 10; i++) {
+//        System.out.print(curr_start+9*i+ " ");
+        System.out.print(bbString.charAt(curr_start + 9 * i));
+      }
+      System.out.println();
+      curr_start--;
+    }
+  }
+
+  public static String BitBoardToString(BitBoardRepresentation bbrep) {
+    long[][] test = bbrep.getBitBoard();
+
+    long longerLong = test[0][0] | test[1][0];
+    long shorterLong = test[0][1] | test[1][1];
+
+    return String.format("%" + 26 + "s", Long.toBinaryString(shorterLong)).replace(' ', '0') + String.format("%" + 64 + "s", Long.toBinaryString(longerLong)).replace(' ', '0');
+  }
+
+  public static String reverseString(String str) {
+    char[] charArray = str.toCharArray();
+    int start = 0;
+    int end = charArray.length - 1;
+
+    // Swap characters from start to end
+    while (start < end) {
+      char temp = charArray[start];
+      charArray[start] = charArray[end];
+      charArray[end] = temp;
+      start++;
+      end--;
+    }
+
+    // Convert the character array back to a string
+    return new String(charArray);
+  }
+
 }
