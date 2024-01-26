@@ -11,17 +11,14 @@ public class Main {
 
 
         counterArray[0][0] = Counter.O;
-        counterArray[9][0] = Counter.O;
-        counterArray[1][0] = Counter.O;
-        counterArray[1][1] = Counter.O;
-        counterArray[1][2] = Counter.O;
+//        counterArray[9][0] = Counter.O;
+//        counterArray[1][0] = Counter.O;
+//        counterArray[1][1] = Counter.O;
+//
         counterArray[2][0] = Counter.X;
         counterArray[3][0] = Counter.O;
-        counterArray[4][0] = Counter.O;
-        counterArray[5][0] = Counter.O;
-        counterArray[6][0] = Counter.O;
-        counterArray[7][0] = Counter.O;
-        counterArray[8][0] = Counter.O;
+        counterArray[4][0] = Counter.X;
+
 
         //diag
 //        counterArray[5][0] = Counter.O;

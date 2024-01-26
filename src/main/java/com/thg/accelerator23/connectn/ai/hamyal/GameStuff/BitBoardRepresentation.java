@@ -24,6 +24,7 @@ public class BitBoardRepresentation {
     }
 
     public void makeMove(int col) {
+        System.out.println(homePlayer);
         long move;
         if (col >= 7 && fillLevel[7] > 64) {
             move = 1L << fillLevel[col]++ - 64;
@@ -33,6 +34,7 @@ public class BitBoardRepresentation {
             bitBoard[homePlayer ? 0 : 1][0] ^= move;
         }
         moves[moveCount++] = col;
+        homePlayer = !homePlayer;
     }
 
     public void undoMove() {
@@ -45,6 +47,7 @@ public class BitBoardRepresentation {
             move = 1L << --fillLevel[col];
             bitBoard[homePlayer ? 0 : 1][0] ^= move;
         }
+        homePlayer = !homePlayer;
     }
 
     public int[] validMoves() {
@@ -54,8 +57,8 @@ public class BitBoardRepresentation {
         long TOPShorterLong = 0b10000000010000000010000000; //Long.parseUnsignedLong("10000000010000000010000000",2);
 
         for(int col = 0; col <= 6; col++) {
-            System.out.println(Long.toBinaryString((TOPLongerLong)));
-            System.out.println(Long.toBinaryString((1L << fillLevel[col])));
+//            System.out.println(Long.toBinaryString((TOPLongerLong)));
+//            System.out.println(Long.toBinaryString((1L << fillLevel[col])));
             if ((TOPLongerLong & (1L << fillLevel[col])) == 0) {moves.add(col);}
         }
         for(int col = 8; col <= 9; col++) {
@@ -76,7 +79,7 @@ public class BitBoardRepresentation {
     public byte isOver() {
         if (isWin(bitBoard[0])) {
             return 0b1;
-        } else if (isWin(bitBoard[2])) {
+        } else if (isWin(bitBoard[1])) {
             return 0b10;
         } else if (moves.length == 0) {
             return 0b11;

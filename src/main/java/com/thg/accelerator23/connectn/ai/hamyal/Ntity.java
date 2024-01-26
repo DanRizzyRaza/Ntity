@@ -5,6 +5,7 @@ import com.thehutgroup.accelerator.connectn.player.Counter;
 import com.thehutgroup.accelerator.connectn.player.GameConfig;
 import com.thehutgroup.accelerator.connectn.player.Player;
 import com.thg.accelerator23.connectn.ai.hamyal.GameStuff.BitBoardRepresentation;
+import com.thg.accelerator23.connectn.ai.hamyal.minimax.MiniMax;
 
 import static com.thg.accelerator23.connectn.ai.hamyal.GameStuff.BitBoardRepresentation.*;
 
@@ -36,10 +37,10 @@ public class Ntity extends Player {
     for (Counter[] column: counterPlacements) {
       for (Counter counter: column) {
 //        System.out.println("counter" + counter + " at column" + currColumn);
-        homePlayer = !homePlayer;
 
         if(counter != null) {
           fillLevel[currColumn]++;
+          homePlayer = !homePlayer;
         }
 
         if(moveLocation < 90 && (moveLocation + 2) % 9 == 0) {
@@ -71,7 +72,7 @@ public class Ntity extends Player {
         moveLocation++;
       }
       }
-    return new BitBoardRepresentation(bitBoard, fillLevel, homePlayer);
+    return new BitBoardRepresentation(bitBoard, fillLevel, homePlayer); // homePlayer is now whichever player we are
   }
 
   public void setUpDimensions(GameConfig gameConfig) {
@@ -88,7 +89,14 @@ public class Ntity extends Player {
   public int makeMove(Board board) {
     //TODO: make sure said analysis uses less than 2G of heap and returns within 10 seconds on whichever machine is running it
 
-    long[] test = getCounterPlacements(board)[0]; //home
+
+//    BitBoardRepresentation test = getCounterPlacements(board);
+
+
+    MiniMax test = new MiniMax(getCounterPlacements(board));
+    System.out.println(test.NegaMax(test.getBitBoardRepresentation(), 10000, -100, 100));
+
+//    long[] test = getCounterPlacements(board)[0]; //home
 //    System.out.println(isWin(test));
 //    int[] fillLevel = {7,16,25,34,43,52,61,70,79,88};
 //    int[] fillLevel = {8,17,26,35,44,53,62,71,80,89};
